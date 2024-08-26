@@ -15,8 +15,7 @@ class ApiHandling {
         case invalidData
     }
     
-    func getJson(lat: Double, lon: Double) async throws -> Forecast {
-        let endpoint = "https://api.openweathermap.org/data/2.5/forecast?lat=\(lat)&lon=\(lon)&appid=e312666f8cbdc4aa3610ab1d5f023ed2&units=metric"
+    func getJson<T: Codable>(endpoint: String, strategy: JSONDecoder.KeyDecodingStrategy) async throws -> T {
         
         guard let url = URL(string: endpoint) else {
             throw getAPIError.invalidURL
@@ -30,8 +29,8 @@ class ApiHandling {
         
         do {
             let decoder = JSONDecoder()
-            decoder.keyDecodingStrategy = .convertFromSnakeCase
-            return try decoder.decode(Forecast.self, from: data)
+            decoder.keyDecodingStrategy = strategy
+            return try decoder.decode(T.self, from: data)
         } catch {
             throw getAPIError.invalidData
         }

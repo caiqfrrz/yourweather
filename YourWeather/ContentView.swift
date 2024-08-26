@@ -25,7 +25,7 @@ struct ContentView: View {
                     Text(String(forecast?.list[0].main.temp ?? 0.0))
                 }
                 Section("Time:") {
-                    Text(forecast?.list[0].dt.formatted(date: .omitted, time: .complete) ?? "Error")
+                    Text(forecast?.list[0].dt.formatted(date: .omitted, time: .shortened) ?? "Error")
                 }
             }
             .navigationTitle("YourWeather")
@@ -46,7 +46,9 @@ struct ContentView: View {
             let lat = coded[0].location?.coordinate.latitude ?? 0.0
             let lon = coded[0].location?.coordinate.longitude ?? 0.0
             
-            return try await ApiHandling().getJson(lat: lat, lon: lon)
+            let forecast: Forecast = try await ApiHandling().getJson(endpoint: "https://api.openweathermap.org/data/2.5/forecast?lat=\(Double(lat))&lon=\(Double(lon) )&appid=e312666f8cbdc4aa3610ab1d5f023ed2&units=metric", strategy: .convertFromSnakeCase)
+            
+            return forecast
         } catch {
             print("Error getting location: \(error.localizedDescription)")
         }
