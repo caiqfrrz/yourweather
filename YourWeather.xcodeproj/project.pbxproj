@@ -11,6 +11,8 @@
 		D4A93FBF2C796C5A0023FEB4 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A93FBE2C796C5A0023FEB4 /* ContentView.swift */; };
 		D4A93FC12C796C5C0023FEB4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D4A93FC02C796C5C0023FEB4 /* Assets.xcassets */; };
 		D4A93FC42C796C5C0023FEB4 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D4A93FC32C796C5C0023FEB4 /* Preview Assets.xcassets */; };
+		D4A93FCB2C7981FB0023FEB4 /* Forecast.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A93FCA2C7981FB0023FEB4 /* Forecast.swift */; };
+		D4A93FCD2C7989C80023FEB4 /* ApiHandling.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A93FCC2C7989C80023FEB4 /* ApiHandling.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -19,6 +21,8 @@
 		D4A93FBE2C796C5A0023FEB4 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		D4A93FC02C796C5C0023FEB4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D4A93FC32C796C5C0023FEB4 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		D4A93FCA2C7981FB0023FEB4 /* Forecast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Forecast.swift; sourceTree = "<group>"; };
+		D4A93FCC2C7989C80023FEB4 /* ApiHandling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiHandling.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,6 +57,8 @@
 			children = (
 				D4A93FBC2C796C5A0023FEB4 /* YourWeatherApp.swift */,
 				D4A93FBE2C796C5A0023FEB4 /* ContentView.swift */,
+				D4A93FCC2C7989C80023FEB4 /* ApiHandling.swift */,
+				D4A93FCA2C7981FB0023FEB4 /* Forecast.swift */,
 				D4A93FC02C796C5C0023FEB4 /* Assets.xcassets */,
 				D4A93FC22C796C5C0023FEB4 /* Preview Content */,
 			);
@@ -138,7 +144,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				D4A93FBF2C796C5A0023FEB4 /* ContentView.swift in Sources */,
+				D4A93FCB2C7981FB0023FEB4 /* Forecast.swift in Sources */,
 				D4A93FBD2C796C5A0023FEB4 /* YourWeatherApp.swift in Sources */,
+				D4A93FCD2C7989C80023FEB4 /* ApiHandling.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
