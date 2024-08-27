@@ -7,7 +7,7 @@
 
 import Foundation
 
-class ApiHandling {
+final class ApiHandling {
     
     enum getAPIError: Error {
         case invalidURL
