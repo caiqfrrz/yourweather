@@ -15,6 +15,8 @@
 		D4A93FCD2C7989C80023FEB4 /* ApiHandling.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A93FCC2C7989C80023FEB4 /* ApiHandling.swift */; };
 		D4A93FCF2C7D2B140023FEB4 /* CurrentWeatherView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A93FCE2C7D2B140023FEB4 /* CurrentWeatherView.swift */; };
 		D4A93FD42C7D4A880023FEB4 /* FutureForecastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A93FD32C7D4A880023FEB4 /* FutureForecastView.swift */; };
+		D4B4F4742C7FAAA800E60A79 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B4F4732C7FAAA700E60A79 /* LocationManager.swift */; };
+		D4B4F47C2C7FBDB100E60A79 /* LocationSearchService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B4F47B2C7FBDB100E60A79 /* LocationSearchService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +30,8 @@
 		D4A93FCE2C7D2B140023FEB4 /* CurrentWeatherView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentWeatherView.swift; sourceTree = "<group>"; };
 		D4A93FD02C7D3E570023FEB4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		D4A93FD32C7D4A880023FEB4 /* FutureForecastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FutureForecastView.swift; sourceTree = "<group>"; };
+		D4B4F4732C7FAAA700E60A79 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
+		D4B4F47B2C7FBDB100E60A79 /* LocationSearchService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSearchService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,8 +67,10 @@
 				D4A93FD02C7D3E570023FEB4 /* Info.plist */,
 				D4A93FBC2C796C5A0023FEB4 /* YourWeatherApp.swift */,
 				D4A93FBE2C796C5A0023FEB4 /* ContentView.swift */,
+				D4B4F4732C7FAAA700E60A79 /* LocationManager.swift */,
 				D4A93FCE2C7D2B140023FEB4 /* CurrentWeatherView.swift */,
 				D4A93FD32C7D4A880023FEB4 /* FutureForecastView.swift */,
+				D4B4F47B2C7FBDB100E60A79 /* LocationSearchService.swift */,
 				D4A93FCC2C7989C80023FEB4 /* ApiHandling.swift */,
 				D4A93FCA2C7981FB0023FEB4 /* Forecast.swift */,
 				D4A93FC02C796C5C0023FEB4 /* Assets.xcassets */,
@@ -154,8 +160,10 @@
 				D4A93FBF2C796C5A0023FEB4 /* ContentView.swift in Sources */,
 				D4A93FCB2C7981FB0023FEB4 /* Forecast.swift in Sources */,
 				D4A93FBD2C796C5A0023FEB4 /* YourWeatherApp.swift in Sources */,
+				D4B4F4742C7FAAA800E60A79 /* LocationManager.swift in Sources */,
 				D4A93FCF2C7D2B140023FEB4 /* CurrentWeatherView.swift in Sources */,
 				D4A93FD42C7D4A880023FEB4 /* FutureForecastView.swift in Sources */,
+				D4B4F47C2C7FBDB100E60A79 /* LocationSearchService.swift in Sources */,
 				D4A93FCD2C7989C80023FEB4 /* ApiHandling.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -294,6 +302,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = YourWeather/Info.plist;
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "This app needs your location to provide you further information of the current weather in your location";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "This app needs your location to provide you further information of the current weather in your location";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -326,6 +335,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = YourWeather/Info.plist;
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "This app needs your location to provide you further information of the current weather in your location";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "This app needs your location to provide you further information of the current weather in your location";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

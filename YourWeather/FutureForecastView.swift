@@ -26,7 +26,7 @@ struct FutureForecastView: View {
                                 Image(data.list[index].weather.first?.icon ?? "")
                                     .resizable()
                                     .scaledToFit()
-                                    .frame(width: 70, height: 70)
+                                    .frame(width: 50, height: 50)
                                 
                                 Text(data.forecastTimes[index].formatted(date: .omitted, time: .shortened))
                                     .foregroundStyle(.white)
