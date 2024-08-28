@@ -15,22 +15,26 @@ struct FutureForecastView: View {
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack {
-                ForEach(forecast?.list ?? [], id: \.dt) { aux in
-                    VStack {
-                        if aux.localDate > time {
-                            Text("\(Int(aux.main.temp))°")
-                                .foregroundStyle(.white)
-                                .font(.title2.bold())
-
-                            AsyncImage(url: aux.weather.first?.iconURL)
-                                .frame(width: 70, height: 50)
-                                .clipped()
-                            
-                            Text(aux.localDate.formatted(date: .omitted, time: .shortened))
-                                .foregroundStyle(.white)
+                if let data = forecast {
+                    ForEach(0..<8) { index in
+                        if data.forecastTimes[index] > time {
+                            VStack {
+                                Text("\(Int(data.list[index].main.temp))°")
+                                    .foregroundStyle(.white)
+                                    .font(.title2.bold())
+                                
+                                Image(data.list[index].weather.first?.icon ?? "")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 70, height: 70)
+                                
+                                Text(data.forecastTimes[index].formatted(date: .omitted, time: .shortened))
+                                    .foregroundStyle(.white)
+                            }
+                            .padding(.horizontal)
                         }
                     }
-                    .padding(.horizontal)
+                    
                 }
             }
             .padding()
@@ -46,7 +50,7 @@ struct FutureForecastView: View {
             FutureForecastView(forecast: forecast, time: Date())
                 .task {
                     do {
-                        forecast = try await ApiHandling().getJson(endpoint: "https://api.openweathermap.org/data/2.5/forecast?lat=22.280851&lon=114.169944&appid=e312666f8cbdc4aa3610ab1d5f023ed2&units=metric", strategy: .convertFromSnakeCase)
+                        forecast = try await ApiHandling().getJson(endpoint: "https://api.openweathermap.org/data/2.5/forecast?lat=-25.4371499&lon=-49.347251&appid=e312666f8cbdc4aa3610ab1d5f023ed2&units=metric", strategy: .convertFromSnakeCase)
                     } catch {
                         print("Error: \(error.localizedDescription)")
                     }

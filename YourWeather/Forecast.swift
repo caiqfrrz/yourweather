@@ -8,8 +8,9 @@
 import Foundation
 import SwiftUI
 
-struct ForecastList: Codable {
+struct ForecastList: Codable, Identifiable {
     
+    let id = UUID()
     let dt: TimeInterval
     let timezone: Int?
     
@@ -20,6 +21,18 @@ struct ForecastList: Codable {
         
         return date.addingTimeInterval(totalOffset)
     }
+    
+    struct Sys: Codable {
+        let country: String?
+    }
+    let sys: Sys?
+    
+    struct Coords: Codable {
+        let lat: Double
+        let lon: Double
+    }
+    let coord: Coords?
+    
     struct Main: Codable {
         let temp: Double
         let feelsLike: Double?
@@ -36,12 +49,13 @@ struct ForecastList: Codable {
             URL(string: "https://openweathermap.org/img/wn/\(icon)@2x.png")!
         }
         var background: LinearGradient {
-            if id >= 200 && id <= 232 {
-                return LinearGradient(stops: [.init(color: Color(red: 0.6, green: 0.5, blue: 0.9), location: 0.8),
-                                              .init(color: Color(red: 0.5, green: 0.4, blue: 0.7), location: 0.2)], startPoint: .top, endPoint: .bottom)
+            if icon == "01n" || icon == "02n" || icon == "03n" || icon == "04n" || icon == "09n" || icon == "10n" || icon == "11n" || icon == "13n" || icon == "50n" {
+                return LinearGradient(stops: [.init(color: Color(red: 0, green: 0, blue: 0.4), location: 0.1),
+                                              .init(color: Color(red: 0.3, green: 0.3, blue: 0.3), location: 1)], startPoint: .top, endPoint: .bottom)
+            } else {
+                return LinearGradient(stops: [.init(color: Color(red: 0.7, green: 0.6, blue: 0), location: 0),
+                                              .init(color: Color(red: 0.1, green: 0.5, blue: 0.9), location: 0.5)], startPoint: .top, endPoint: .bottom)
             }
-            return LinearGradient(stops: [.init(color: Color(red: 0.6, green: 0.5, blue: 0.9), location: 0.8),
-                                          .init(color: Color(red: 0.5, green: 0.4, blue: 0.7), location: 0.2)], startPoint: .top, endPoint: .bottom)
         }
     }
     let weather: [Weather]
@@ -56,14 +70,32 @@ struct ForecastList: Codable {
     let name: String?
 }
 
-struct Forecast: Codable {
+struct Forecast: Codable{
     
     let list: [ForecastList]
     
+    var forecastTimes: [Date] {
+        var times = [Date]()
+        for aux in list {
+            let date = Date(timeIntervalSince1970: aux.dt)
+            let systemTimezoneOffset = TimeInterval(TimeZone.current.secondsFromGMT(for: date))
+            let totalOffset = TimeInterval(city.timezone ?? 0) - systemTimezoneOffset
+            
+            times.append(date.addingTimeInterval(totalOffset))
+        }
+        return times
+    }
+    
     struct City: Codable {
         let name: String
-        let sunrise: Date
-        let sunset: Date
+        let timezone: Int?
+        let country: String
+        
+        struct Coords: Codable {
+            let lat: Double
+            let lon: Double
+        }
+        let coord: Coords?
     }
     let city: City
 }

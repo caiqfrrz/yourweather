@@ -8,62 +8,80 @@
 import SwiftUI
 
 struct CurrentWeatherView: View {
+    @Environment(\.dismiss) var dismiss
     let currentWeather: ForecastList?
     let forecast: Forecast?
     
     var body: some View {
+
         ZStack {
-            LinearGradient(stops: [.init(color: Color(red: 0, green: 0, blue: 0.4), location: 0.1),
-                                   .init(color: Color(red: 0.1, green: 0, blue: 0.3), location: 1)], startPoint: .top, endPoint: .bottom)
-            .ignoresSafeArea()
+            currentWeather?.weather.first?.background
+                .ignoresSafeArea()
             
             VStack {
                 VStack {
-                    Text(currentWeather?.name ?? "")
-                        .font(.title)
-                        .foregroundStyle(.white)
-                    
-                    VStack(alignment: .leading) {
-                        HStack {
-                            Text(String("\(Int(currentWeather?.main.temp ?? 0))°"))
-                                .font(.system(size: 70))
-                                .fontWeight(.light)
+                    ZStack {
+                        Button {
+                            dismiss()
+                        } label: {
+                            Image(systemName: "chevron.backward")
                                 .foregroundStyle(.white)
-                                .padding(.horizontal)
-                                .shadow(color: .black, radius: 10)
+                        }
+                        .frame(maxWidth: .infinity, alignment: .leading)
                         
-                            Spacer()
+                        Text(currentWeather?.name ?? "")
+                            .font(.title)
+                            .foregroundStyle(.white)
+                        
+                    }
+                    
+                    ScrollView {
+                        
+                        VStack(alignment: .leading) {
                             
-                            AsyncImage(url: currentWeather?.weather.first?.iconURL) { image in
-                                image
+                            HStack {
+                                Text(String("\(Int(currentWeather?.main.temp ?? 0))°"))
+                                    .font(.system(size: 70))
+                                    .fontWeight(.light)
+                                    .foregroundStyle(.white)
+                                    .shadow( radius: 10)
+                                
+                                Spacer()
+                                
+                                Image(currentWeather?.weather.first?.icon ?? "")
                                     .resizable()
-                            } placeholder: {
-                                ProgressView()
+                                    .frame(width: 90, height: 90)
                             }
-                            .frame(width: 120, height: 120)
+                            VStack(alignment: .leading){
+                                
+                                Text(currentWeather?.weather.first?.description.capitalized ?? "")
+                                    .fontWeight(.semibold)
+                                
+                                Text(currentWeather?.localDate.formatted(date: .complete, time: .omitted) ?? "")
+                                    .foregroundStyle(.white)
+                                
+                                
+                                Text(currentWeather?.localDate.formatted(date: .omitted, time: .shortened) ?? "XX:XX")
+                                    .font(.footnote)
+                                    .foregroundStyle(.white)
+                                
+                                FutureForecastView(forecast: forecast, time: currentWeather?.localDate ?? Date())
+                                    .padding(.horizontal)
+                                    .background(.ultraThinMaterial)
+                                    .clipShape(.rect(cornerRadius: 10))
+                                    .padding(.vertical)
+                            }
                         }
-                        VStack(alignment: .leading){
-                            Text(currentWeather?.localDate.formatted(date: .complete, time: .omitted) ?? "")
-                                .foregroundStyle(.white)
-                            
-                            Text(currentWeather?.localDate.formatted(date: .omitted, time: .shortened) ?? "XX:XX")
-                                .font(.footnote)
-                                .foregroundStyle(.white)
-                        }
-                        .padding(.horizontal)
                     }
                 }
-                FutureForecastView(forecast: forecast, time: currentWeather?.localDate ?? Date())
-                    .padding(.horizontal)
-                    .background(.ultraThinMaterial)
-                    .clipShape(.rect(cornerRadius: 10))
-                    .padding(.vertical)
                 
                 Spacer()
             
             }
-            .padding()
+            .padding(.horizontal)
         }
+        .navigationBarBackButtonHidden(true)
+            
     }
 }
 
