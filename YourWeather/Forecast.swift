@@ -99,3 +99,5 @@ struct Forecast: Codable{
     }
     let city: City
 }
+
+

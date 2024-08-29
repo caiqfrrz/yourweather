@@ -9,8 +9,8 @@ import SwiftUI
 
 struct CurrentWeatherView: View {
     @Environment(\.dismiss) var dismiss
-    let currentWeather: ForecastList?
-    let forecast: Forecast?
+    @Binding var currentWeather: ForecastList?
+    @Binding var forecast: Forecast?
     
     var body: some View {
 
@@ -22,6 +22,8 @@ struct CurrentWeatherView: View {
                 VStack {
                     ZStack {
                         Button {
+                            currentWeather = nil
+                            forecast = nil
                             dismiss()
                         } label: {
                             Image(systemName: "chevron.backward")
@@ -80,8 +82,8 @@ struct CurrentWeatherView: View {
             }
             .padding(.horizontal)
         }
+        .toolbar(.hidden)
         .navigationBarBackButtonHidden(true)
-            
     }
 }
 
@@ -92,7 +94,7 @@ struct CurrentWeatherView: View {
         @State var currentForecast: Forecast? = nil
         
         var body: some View {
-            CurrentWeatherView(currentWeather: currentWeather, forecast: currentForecast)
+            CurrentWeatherView(currentWeather: $currentWeather, forecast: $currentForecast)
                 .task {
                     do {
                         currentWeather = try await ApiHandling().getJson(endpoint: "https://api.openweathermap.org/data/2.5/weather?lat=-25.4371499&lon=-49.347251&appid=e312666f8cbdc4aa3610ab1d5f023ed2&units=metric", strategy: .convertFromSnakeCase)
