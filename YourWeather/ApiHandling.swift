@@ -44,7 +44,7 @@ final class ApiHandling {
             let lat = coded[0].location?.coordinate.latitude ?? 0.0
             let lon = coded[0].location?.coordinate.longitude ?? 0.0
             
-            let forecast_aux: T = try await getJson(endpoint: "https://api.openweathermap.org/data/2.5/\(type == "weather" ? "weather" : "forecast")?lat=\(Double(lat))&lon=\(Double(lon))&appid=e312666f8cbdc4aa3610ab1d5f023ed2&units=metric", strategy: .convertFromSnakeCase)
+            let forecast_aux: T = try await getJson(endpoint: "https://api.openweathermap.org/data/2.5/\(type == "weather" ? "weather" : "forecast")?lat=\(Double(lat))&lon=\(Double(lon))&appid=\(API_KEY)&units=metric", strategy: .convertFromSnakeCase)
             
             return forecast_aux
             
@@ -56,7 +56,7 @@ final class ApiHandling {
     
     func getForecast<T: Codable>(lat: Double, lon: Double, type: String) async -> T? {
         do {
-            let forecast_aux: T = try await getJson(endpoint: "https://api.openweathermap.org/data/2.5/\(type == "weather" ? "weather" : "forecast")?lat=\(Double(lat))&lon=\(Double(lon))&appid=e312666f8cbdc4aa3610ab1d5f023ed2&units=metric", strategy: .convertFromSnakeCase)
+            let forecast_aux: T = try await getJson(endpoint: "https://api.openweathermap.org/data/2.5/\(type == "weather" ? "weather" : "forecast")?lat=\(Double(lat))&lon=\(Double(lon))&appid=\(API_KEY)2&units=metric", strategy: .convertFromSnakeCase)
             
             return forecast_aux
             

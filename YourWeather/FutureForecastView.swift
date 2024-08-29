@@ -50,7 +50,7 @@ struct FutureForecastView: View {
             FutureForecastView(forecast: forecast, time: Date())
                 .task {
                     do {
-                        forecast = try await ApiHandling().getJson(endpoint: "https://api.openweathermap.org/data/2.5/forecast?lat=-25.4371499&lon=-49.347251&appid=e312666f8cbdc4aa3610ab1d5f023ed2&units=metric", strategy: .convertFromSnakeCase)
+                        forecast = try await ApiHandling().getJson(endpoint: "https://api.openweathermap.org/data/2.5/forecast?lat=-25.4371499&lon=-49.347251&appid=\(API_KEY)&units=metric", strategy: .convertFromSnakeCase)
                     } catch {
                         print("Error: \(error.localizedDescription)")
                     }
