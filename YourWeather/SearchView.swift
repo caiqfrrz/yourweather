@@ -8,8 +8,7 @@
 import SwiftUI
 
 struct SearchView: View {
-//    @Binding var currentWeather: ForecastList?
-    @Binding var cityList: [WeatherData]
+    @Binding var cityList: CityList
     
     var searchVw: LocationSearchService
     
@@ -29,9 +28,12 @@ struct SearchView: View {
                     
                     Button {
                         Task {
-                            let tempWeather: WeatherData? = await ApiHandling().getWeatherData(for: "\(result.title), \(result.subtitle)")
-                            withAnimation(.easeIn) {
-                                cityList.append(tempWeather!)
+                            if let tempWeather: WeatherData = await ApiHandling().getWeatherData(for: "\(result.title), \(result.subtitle)") {
+                                withAnimation(.easeIn) {
+                                    cityList.addCity(tempWeather)
+                                }
+                            } else {
+                                print("Failed to add city to list")
                             }
                         }
                         searchVw.emptyQuery()
@@ -47,7 +49,7 @@ struct SearchView: View {
 
 #Preview {
     struct previewView: View {
-        @State var cityList: [WeatherData] = []
+        @State var cityList = CityList()
         @State private var searchVw = LocationSearchService()
         
         var body: some View {

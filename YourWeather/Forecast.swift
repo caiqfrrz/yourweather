@@ -8,23 +8,23 @@
 import Foundation
 import SwiftUI
 
-struct WeatherData: Codable, Identifiable {
+struct WeatherData: Codable, Identifiable, Equatable {
     let id = UUID()
     let cityInfo: [CityInfo]
     let forecast: Forecast
 }
 
-struct CityInfo: Codable {
+struct CityInfo: Codable, Equatable {
     let name: String
     let localNames: LocalNames?
     let country: String?
     
-    struct LocalNames: Codable {
+    struct LocalNames: Codable, Equatable {
         let en: String?
     }
 }
 
-struct Forecast: Codable {
+struct Forecast: Codable, Equatable {
     
     let lat: Double
     let lon: Double
@@ -34,30 +34,30 @@ struct Forecast: Codable {
     let daily: [Daily]
     
     
-    struct Current: Codable {
+    struct Current: Codable, Equatable {
         let dt: TimeInterval
         let temp: Double
         let weather: [Weather]
     }
     
-    struct Hourly: Codable {
+    struct Hourly: Codable, Equatable {
         let dt: TimeInterval
         let temp: Double
         let weather: [Weather]
     }
     
-    struct Daily: Codable {
+    struct Daily: Codable, Equatable {
         let dt: TimeInterval
         let weather: [Weather]
         let temp: Temp
         
-        struct Temp: Codable {
+        struct Temp: Codable, Equatable {
             let min: Double
             let max: Double
         }
     }
     
-    struct Weather: Codable {
+    struct Weather: Codable, Equatable {
         let id: Int
         let main: String
         let description: String

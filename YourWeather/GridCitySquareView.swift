@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct GridCitySquareView: View {
-    let weather: WeatherData?
-    
+    @State var weather: WeatherData?
+
     var body: some View {
         VStack {
             Text("\(Int(weather?.forecast.current.temp ?? 0))°")
@@ -23,6 +23,11 @@ struct GridCitySquareView: View {
             Text(weather?.forecast.current.weather.first?.description.capitalized ?? "")
                 .font(.caption)
                 .foregroundStyle(.gray)
+            
+            Text(weather?.getDate(from: weather?.forecast.current.dt ?? 0).formatted(date: .omitted
+                                                                                     , time: .shortened) ?? "")
+                .font(.caption)
+                .foregroundStyle(.gray)
         }
         .frame(width: 150, height: 120)
         .clipShape(.rect(cornerRadius: 15))
@@ -32,6 +37,7 @@ struct GridCitySquareView: View {
         )
         .shadow(radius: 5)
         .padding(.vertical, 5)
+
     }
 }
 

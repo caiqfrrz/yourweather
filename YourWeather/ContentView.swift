@@ -11,7 +11,7 @@ import CoreLocation
 struct ContentView: View {
 
     @State private var searchVw = LocationSearchService()
-    @State private var cityList: [WeatherData] = []
+    @State private var cityList = CityList()
     
     var body: some View {
         NavigationStack {

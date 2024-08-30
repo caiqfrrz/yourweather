@@ -9,39 +9,41 @@ import SwiftUI
 import CoreHaptics
 
 struct GridLayoutView: View {
-    @Binding var cityList: [WeatherData]
+    @Binding var cityList: CityList
+    @Environment(\.scenePhase) private var scenePhase
     
     let columns = [GridItem(.adaptive(minimum: 150))]
     
     var body: some View {
         ScrollView {
             LazyVGrid(columns: columns) {
-                ForEach(cityList) { city in
+                ForEach(cityList.list) { city in
                     NavigationLink {
                         CurrentWeatherView(weatherData: city)
                     } label: {
                         GridCitySquareView(weather: city)
-//                            .onTapGesture {
-//                                Task {
-//                                    currentForecast = await ApiHandling().getForecast(lat: city.coord?.lat ?? 0.0, lon: city.coord?.lon ?? 0)
-//                                }
-//                                navigation = true
-//                            }
-//                            .onLongPressGesture(perform: { removeCity(city) })
                     }
                 }
             }
         }
-    }
-    
-    func removeCity(_ city: WeatherData) {
-            cityList.removeAll(where: {$0.id == city.id})
+        .task {
+            print("updated")
+            await cityList.updateList()
+        }
+        .onChange(of: scenePhase) { oldPhase, newPhase in
+            if newPhase == .active {
+                Task {
+                    print("App became active")
+                    await cityList.updateList()
+                }
+            }
+        }
     }
 }
 
 #Preview {
     struct previewView: View {
-        @State var cityList: [WeatherData] = []
+        @State var cityList = CityList()
         
         var body: some View {
             GridLayoutView( cityList: $cityList)
