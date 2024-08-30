@@ -10,6 +10,7 @@ import CoreLocation
 
 struct ContentView: View {
 
+    @Environment(\.scenePhase) private var scenePhase
     @State private var searchVw = LocationSearchService()
     @State private var cityList = CityList()
     
@@ -24,7 +25,14 @@ struct ContentView: View {
             }
             .searchable(text: $searchVw.query)
             .navigationTitle("YourWeather")
-            
+            .onChange(of: scenePhase) { oldPhase, newPhase in
+                if newPhase == .active {
+                    Task {
+                        print("App became active")
+                        await cityList.updateList()
+                    }
+                }
+            }
         }
     }
 }

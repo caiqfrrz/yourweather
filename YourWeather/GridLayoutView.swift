@@ -10,7 +10,6 @@ import CoreHaptics
 
 struct GridLayoutView: View {
     @Binding var cityList: CityList
-    @Environment(\.scenePhase) private var scenePhase
     
     let columns = [GridItem(.adaptive(minimum: 150))]
     
@@ -29,14 +28,6 @@ struct GridLayoutView: View {
         .task {
             print("updated")
             await cityList.updateList()
-        }
-        .onChange(of: scenePhase) { oldPhase, newPhase in
-            if newPhase == .active {
-                Task {
-                    print("App became active")
-                    await cityList.updateList()
-                }
-            }
         }
     }
 }
