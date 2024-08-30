@@ -11,18 +11,15 @@ import CoreLocation
 struct ContentView: View {
 
     @State private var searchVw = LocationSearchService()
-    @State private var forecast: Forecast? = nil
-    @State private var currentWeather: ForecastList? = nil
-    
-    @State private var cityList: [ForecastList] = []
+    @State private var cityList: [WeatherData] = []
     
     var body: some View {
         NavigationStack {
             ZStack {
                 if !searchVw.results.isEmpty {
-                    SearchView(currentWeather: $currentWeather, cityList: $cityList, searchVw: searchVw)
+                    SearchView(cityList: $cityList, searchVw: searchVw)
                 } else {
-                   GridLayoutView(currentWeather: $currentWeather, currentForecast: $forecast, cityList: $cityList)
+                   GridLayoutView(cityList: $cityList)
                 }
             }
             .searchable(text: $searchVw.query)

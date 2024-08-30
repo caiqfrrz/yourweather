@@ -9,21 +9,18 @@ import SwiftUI
 
 struct CurrentWeatherView: View {
     @Environment(\.dismiss) var dismiss
-    @Binding var currentWeather: ForecastList?
-    @Binding var forecast: Forecast?
+    var weatherData: WeatherData?
     
     var body: some View {
 
         ZStack {
-            currentWeather?.weather.first?.background
+            weatherData?.forecast.current.weather.first?.background
                 .ignoresSafeArea()
             
             VStack {
                 VStack {
                     ZStack {
                         Button {
-                            currentWeather = nil
-                            forecast = nil
                             dismiss()
                         } label: {
                             Image(systemName: "chevron.backward")
@@ -31,7 +28,7 @@ struct CurrentWeatherView: View {
                         }
                         .frame(maxWidth: .infinity, alignment: .leading)
                         
-                        Text(currentWeather?.name ?? "")
+                        Text(weatherData?.cityInfo.first?.name ?? "")
                             .font(.title)
                             .foregroundStyle(.white)
                         
@@ -42,7 +39,7 @@ struct CurrentWeatherView: View {
                         VStack(alignment: .leading) {
                             
                             HStack {
-                                Text(String("\(Int(currentWeather?.main.temp ?? 0))°"))
+                                Text(String("\(Int(weatherData?.forecast.current.temp ?? 0))°"))
                                     .font(.system(size: 70))
                                     .fontWeight(.light)
                                     .foregroundStyle(.white)
@@ -50,24 +47,24 @@ struct CurrentWeatherView: View {
                                 
                                 Spacer()
                                 
-                                Image(currentWeather?.weather.first?.icon ?? "")
+                                Image(weatherData?.forecast.current.weather.first?.icon ?? "")
                                     .resizable()
                                     .frame(width: 90, height: 90)
                             }
                             VStack(alignment: .leading){
                                 
-                                Text(currentWeather?.weather.first?.description.capitalized ?? "")
+                                Text(weatherData?.forecast.current.weather.first?.description.capitalized ?? "")
                                     .fontWeight(.semibold)
                                 
-                                Text(currentWeather?.localDate.formatted(date: .complete, time: .omitted) ?? "")
+                                Text(weatherData?.getDate(from: weatherData?.forecast.current.dt ?? 0.0).formatted(date: .complete, time: .omitted) ?? "")
                                     .foregroundStyle(.white)
                                 
                                 
-                                Text(currentWeather?.localDate.formatted(date: .omitted, time: .shortened) ?? "XX:XX")
+                                Text(weatherData?.getDate(from: weatherData?.forecast.current.dt ?? 0.0).formatted(date: .omitted, time: .shortened) ?? "XX:XX")
                                     .font(.footnote)
                                     .foregroundStyle(.white)
                                 
-                                FutureForecastView(forecast: forecast, time: currentWeather?.localDate ?? Date())
+                                FutureForecastView(weatherData: weatherData)
                                     .padding(.horizontal)
                                     .background(.ultraThinMaterial)
                                     .clipShape(.rect(cornerRadius: 10))
@@ -90,16 +87,17 @@ struct CurrentWeatherView: View {
 #Preview {
     
     struct previewView: View {
-        @State var currentWeather: ForecastList? = nil
-        @State var currentForecast: Forecast? = nil
+        @State var weather: WeatherData? = nil
         
         var body: some View {
-            CurrentWeatherView(currentWeather: $currentWeather, forecast: $currentForecast)
+            CurrentWeatherView(weatherData: weather)
                 .task {
                     do {
-                        currentWeather = try await ApiHandling().getJson(endpoint: "https://api.openweathermap.org/data/2.5/weather?lat=-25.4371499&lon=-49.347251&appid=\(API_KEY)&units=metric", strategy: .convertFromSnakeCase)
+                        let forecastAux: Forecast = try await ApiHandling().getJson(endpoint: "https://api.openweathermap.org/data/3.0/onecall?lat=-25.4371499&lon=-49.347251&appid=\(API_KEY)&units=metric", strategy: .convertFromSnakeCase)
                         
-                        currentForecast = try await ApiHandling().getJson(endpoint: "https://api.openweathermap.org/data/2.5/forecast?lat=-25.4371499&lon=-49.347251&appid=\(API_KEY)&units=metric", strategy: .convertFromSnakeCase)
+                        let cityInfo: [CityInfo] = try await ApiHandling().getJson(endpoint: "http://api.openweathermap.org/geo/1.0/reverse?lat=-25.4371499&lon=-49.347251&appid=\(API_KEY)", strategy: .convertFromSnakeCase)
+                        
+                        weather = WeatherData(cityInfo: cityInfo, forecast: forecastAux)
                     } catch {
                         print("Error: \(error.localizedDescription)")
                     }

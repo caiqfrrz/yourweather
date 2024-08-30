@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct SearchView: View {
-    @Binding var currentWeather: ForecastList?
-    @Binding var cityList: [ForecastList]
+//    @Binding var currentWeather: ForecastList?
+    @Binding var cityList: [WeatherData]
     
     var searchVw: LocationSearchService
     
@@ -29,9 +29,9 @@ struct SearchView: View {
                     
                     Button {
                         Task {
-                            currentWeather = await ApiHandling().getForecast(for: "\(result.title), \(result.subtitle)", type: "weather")
+                            let tempWeather: WeatherData? = await ApiHandling().getWeatherData(for: "\(result.title), \(result.subtitle)")
                             withAnimation(.easeIn) {
-                                cityList.append(currentWeather!)
+                                cityList.append(tempWeather!)
                             }
                         }
                         searchVw.emptyQuery()
@@ -47,20 +47,11 @@ struct SearchView: View {
 
 #Preview {
     struct previewView: View {
-        @State var currentWeather: ForecastList? = nil
-        @State var cityList: [ForecastList] = []
+        @State var cityList: [WeatherData] = []
         @State private var searchVw = LocationSearchService()
         
         var body: some View {
-            SearchView(currentWeather: $currentWeather, cityList: $cityList, searchVw: searchVw)
-                .task {
-                    do {
-                        currentWeather = try await ApiHandling().getJson(endpoint: "https://api.openweathermap.org/data/2.5/weather?lat=-25.4371499&lon=-49.347251&appid=\(API_KEY)&units=metric", strategy: .convertFromSnakeCase)
-                        
-                    } catch {
-                        print("Error: \(error.localizedDescription)")
-                    }
-                }
+            SearchView(cityList: $cityList, searchVw: searchVw)
         }
     }
     

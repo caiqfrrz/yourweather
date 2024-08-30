@@ -8,37 +8,55 @@
 import Foundation
 import SwiftUI
 
-struct ForecastList: Codable, Identifiable {
-    
+struct WeatherData: Codable, Identifiable {
     let id = UUID()
-    let dt: TimeInterval
-    let timezone: Int?
+    let cityInfo: [CityInfo]
+    let forecast: Forecast
+}
+
+struct CityInfo: Codable {
+    let name: String
+    let localNames: LocalNames
+    let country: String
     
-    var localDate: Date {
-        let date = Date(timeIntervalSince1970: dt)
-        let systemTimezoneOffset = TimeInterval(TimeZone.current.secondsFromGMT(for: date))
-        let totalOffset = TimeInterval(timezone ?? 0) - systemTimezoneOffset
-        
-        return date.addingTimeInterval(totalOffset)
+    struct LocalNames: Codable {
+        let en: String
     }
+}
+
+struct Forecast: Codable {
     
-    struct Sys: Codable {
-        let country: String?
-    }
-    let sys: Sys?
+    let lat: Double
+    let lon: Double
+    let timezoneOffset: Int?
+    let current: Current
+    let hourly: [Hourly]
+    let daily: [Daily]
     
-    struct Coords: Codable {
-        let lat: Double
-        let lon: Double
-    }
-    let coord: Coords?
     
-    struct Main: Codable {
+    struct Current: Codable {
+        let dt: TimeInterval
         let temp: Double
-        let feelsLike: Double?
-        let humidity: Int
+        let weather: [Weather]
     }
-    let main: Main
+    
+    struct Hourly: Codable {
+        let dt: TimeInterval
+        let temp: Double
+        let weather: [Weather]
+    }
+    
+    struct Daily: Codable {
+        let dt: TimeInterval
+        let weather: [Weather]
+        let temp: Temp
+        
+        struct Temp: Codable {
+            let min: Double
+            let max: Double
+        }
+    }
+    
     struct Weather: Codable {
         let id: Int
         let main: String
@@ -58,46 +76,18 @@ struct ForecastList: Codable, Identifiable {
             }
         }
     }
-    let weather: [Weather]
     
-    struct Rain: Codable {
-        enum CodingKeys: String, CodingKey {
-            case _3h = "3h"
-        }
-        let _3h: Double
-    }
-    let rain: Rain?
-    let name: String?
 }
 
-struct Forecast: Codable{
-    
-    let list: [ForecastList]
-    
-    var forecastTimes: [Date] {
-        var times = [Date]()
-        for aux in list {
-            let date = Date(timeIntervalSince1970: aux.dt)
-            let systemTimezoneOffset = TimeInterval(TimeZone.current.secondsFromGMT(for: date))
-            let totalOffset = TimeInterval(city.timezone ?? 0) - systemTimezoneOffset
-            
-            times.append(date.addingTimeInterval(totalOffset))
-        }
-        return times
-    }
-    
-    struct City: Codable {
-        let name: String
-        let timezone: Int?
-        let country: String
+extension WeatherData {
+    func getDate(from dt: TimeInterval) -> Date {
+        let date = Date(timeIntervalSince1970: dt)
+        let systemTimezoneOffset = TimeInterval(TimeZone.current.secondsFromGMT(for: date))
+        let totalOffset = TimeInterval(forecast.timezoneOffset ?? 0) - systemTimezoneOffset
         
-        struct Coords: Codable {
-            let lat: Double
-            let lon: Double
-        }
-        let coord: Coords?
+        return date.addingTimeInterval(totalOffset)
     }
-    let city: City
 }
+
 
 

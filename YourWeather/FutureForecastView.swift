@@ -9,26 +9,25 @@
 import SwiftUI
 
 struct FutureForecastView: View {
-    let forecast: Forecast?
-    let time: Date
+    let weatherData: WeatherData?
     
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack {
-                if let data = forecast {
-                    ForEach(0..<8) { index in
-                        if data.forecastTimes[index] > time {
+                if let data = weatherData {
+                    ForEach(0..<16) { index in
+                        if data.getDate(from: data.forecast.hourly[index].dt) > data.getDate(from: data.forecast.current.dt) {
                             VStack {
-                                Text("\(Int(data.list[index].main.temp))°")
+                                Text("\(Int(data.forecast.hourly[index].temp))°")
                                     .foregroundStyle(.white)
                                     .font(.title2.bold())
                                 
-                                Image(data.list[index].weather.first?.icon ?? "")
+                                Image(data.forecast.hourly[index].weather.first?.icon ?? "")
                                     .resizable()
                                     .scaledToFit()
                                     .frame(width: 50, height: 50)
                                 
-                                Text(data.forecastTimes[index].formatted(date: .omitted, time: .shortened))
+                                Text(data.getDate(from: data.forecast.hourly[index].dt).formatted(date: .omitted, time: .shortened))
                                     .foregroundStyle(.white)
                             }
                             .padding(.horizontal)
@@ -44,17 +43,10 @@ struct FutureForecastView: View {
 
 #Preview {
     struct previewView: View {
-        @State var forecast: Forecast? = nil
+        @State var forecast: WeatherData? = nil
         
         var body: some View {
-            FutureForecastView(forecast: forecast, time: Date())
-                .task {
-                    do {
-                        forecast = try await ApiHandling().getJson(endpoint: "https://api.openweathermap.org/data/2.5/forecast?lat=-25.4371499&lon=-49.347251&appid=\(API_KEY)&units=metric", strategy: .convertFromSnakeCase)
-                    } catch {
-                        print("Error: \(error.localizedDescription)")
-                    }
-                }
+            FutureForecastView(weatherData: forecast)
         }
     }
     

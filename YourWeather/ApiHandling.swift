@@ -37,16 +37,16 @@ final class ApiHandling {
         }
     }
     
-    func getForecast<T: Codable>(for locale: String, type: String) async -> T? {
+    func getForecast<T: Codable>(for locale: String) async -> T? {
         do {
             let coded = try await CLGeocoder().geocodeAddressString(locale)
             
             let lat = coded[0].location?.coordinate.latitude ?? 0.0
             let lon = coded[0].location?.coordinate.longitude ?? 0.0
             
-            let forecast_aux: T = try await getJson(endpoint: "https://api.openweathermap.org/data/2.5/\(type == "weather" ? "weather" : "forecast")?lat=\(Double(lat))&lon=\(Double(lon))&appid=\(API_KEY)&units=metric", strategy: .convertFromSnakeCase)
+            let forecastAux: T = try await getJson(endpoint: "https://api.openweathermap.org/data/3.0/onecall?lat=\(Double(lat))&lon=\(Double(lon))&appid=\(API_KEY)&units=metric", strategy: .convertFromSnakeCase)
             
-            return forecast_aux
+            return forecastAux
             
         } catch {
             print("Error getting location: \(error.localizedDescription)")
@@ -54,14 +54,47 @@ final class ApiHandling {
         return nil
     }
     
+    func getWeatherData(for locale: String) async -> WeatherData? {
+        do {
+            let coded = try await CLGeocoder().geocodeAddressString(locale)
+            
+            let lat = coded[0].location?.coordinate.latitude ?? 0.0
+            let lon = coded[0].location?.coordinate.longitude ?? 0.0
+            
+            let forecastAux: Forecast = try await getJson(endpoint: "https://api.openweathermap.org/data/3.0/onecall?lat=\(Double(lat))&lon=\(Double(lon))&appid=\(API_KEY)&units=metric", strategy: .convertFromSnakeCase)
+            
+            let cityInfo: [CityInfo] = try await getJson(endpoint: "http://api.openweathermap.org/geo/1.0/reverse?lat=\(Double(lat))&lon=\(Double(lon))&appid=\(API_KEY)", strategy: .convertFromSnakeCase)
+            
+            return WeatherData(cityInfo: cityInfo, forecast: forecastAux)
+            
+        } catch {
+            print("Error getting weather data: \(error.localizedDescription)")
+        }
+        return nil
+    }
+    
     func getForecast<T: Codable>(lat: Double, lon: Double, type: String) async -> T? {
         do {
-            let forecast_aux: T = try await getJson(endpoint: "https://api.openweathermap.org/data/2.5/\(type == "weather" ? "weather" : "forecast")?lat=\(Double(lat))&lon=\(Double(lon))&appid=\(API_KEY)&units=metric", strategy: .convertFromSnakeCase)
+            let forecastAux: T = try await getJson(endpoint: "https://api.openweathermap.org/data/3.0/onecall?lat=\(Double(lat))&lon=\(Double(lon))&appid=\(API_KEY)&units=metric", strategy: .convertFromSnakeCase)
             
-            return forecast_aux
+            return forecastAux
             
         } catch {
             print("Error getting location: \(error.localizedDescription)")
+        }
+        return nil
+    }
+}
+
+extension ApiHandling {
+    func reverseGeocode(lat: Double, lon: Double) async -> CityInfo? {
+        do {
+            let cityInfo: CityInfo = try await getJson(endpoint: "http://api.openweathermap.org/geo/1.0/reverse?lat=\(Double(lat))&lon=\(Double(lon))&limit=5&appid=\(API_KEY)", strategy: .convertFromSnakeCase)
+            
+            return cityInfo
+            
+        } catch {
+            print("Error getting city info: \(error.localizedDescription)")
         }
         return nil
     }
