@@ -16,11 +16,11 @@ struct WeatherData: Codable, Identifiable {
 
 struct CityInfo: Codable {
     let name: String
-    let localNames: LocalNames
-    let country: String
+    let localNames: LocalNames?
+    let country: String?
     
     struct LocalNames: Codable {
-        let en: String
+        let en: String?
     }
 }
 
