@@ -8,13 +8,15 @@
 import SwiftUI
 
 struct CurrentWeatherView: View {
+
     @Environment(\.dismiss) var dismiss
-    var weatherData: WeatherData?
+    @State var weatherData: WeatherData
+    @State var cityList = CityList.shared
     
     var body: some View {
-
+        
         ZStack {
-            weatherData?.forecast.current.weather.first?.background
+            weatherData.forecast.current.weather.first?.background
                 .ignoresSafeArea()
             
             VStack {
@@ -28,18 +30,18 @@ struct CurrentWeatherView: View {
                         }
                         .frame(maxWidth: .infinity, alignment: .leading)
                         
-                        Text(weatherData?.cityInfo.first?.name ?? "")
+                        Text(weatherData.cityInfo.first?.name ?? "")
                             .font(.title)
                             .foregroundStyle(.white)
                         
                     }
                     
-                    ScrollView {
+                    ScrollView(showsIndicators: false) {
                         
                         VStack(alignment: .leading) {
                             
                             HStack {
-                                Text(String("\(Int(weatherData?.forecast.current.temp ?? 0))°"))
+                                Text(String("\(Int(weatherData.forecast.current.temp))°"))
                                     .font(.system(size: 70))
                                     .fontWeight(.light)
                                     .foregroundStyle(.white)
@@ -47,63 +49,60 @@ struct CurrentWeatherView: View {
                                 
                                 Spacer()
                                 
-                                Image(weatherData?.forecast.current.weather.first?.icon ?? "")
+                                Image(weatherData.forecast.current.weather.first?.icon ?? "")
                                     .resizable()
                                     .frame(width: 90, height: 90)
                             }
                             VStack(alignment: .leading){
                                 
-                                Text(weatherData?.forecast.current.weather.first?.description.capitalized ?? "")
+                                Text(weatherData.forecast.current.weather.first?.description.capitalized ?? "")
                                     .fontWeight(.semibold)
                                 
-                                Text(weatherData?.getDate(from: weatherData?.forecast.current.dt ?? 0.0).formatted(date: .complete, time: .omitted) ?? "")
+                                Text(weatherData.getDate(from: weatherData.forecast.current.dt).formatted(date: .complete, time: .omitted))
                                     .foregroundStyle(.white)
                                 
                                 
-                                Text(weatherData?.getDate(from: weatherData?.forecast.current.dt ?? 0.0).formatted(date: .omitted, time: .shortened) ?? "XX:XX")
+                                Text(weatherData.getDate(from: weatherData.forecast.current.dt).formatted(date: .omitted, time: .shortened))
                                     .font(.footnote)
                                     .foregroundStyle(.white)
                                 
-                                FutureForecastView(weatherData: weatherData)
+                                FutureForecastView(data: $weatherData)
                                     .padding(.horizontal)
                                     .background(.ultraThinMaterial)
                                     .clipShape(.rect(cornerRadius: 20))
                                     .padding(.vertical)
                                 
-                                DailyWeatherView(weatherData: weatherData)
+                                DailyWeatherView(weather: $weatherData)
                             }
                         }
                     }
                 }
                 
                 Spacer()
-            
+                
             }
             .padding(.horizontal)
         }
         .toolbar(.hidden)
         .navigationBarBackButtonHidden(true)
+        .onChange(of: cityList.list) { oldList, newList in
+                                if let updatedWeatherData = newList.first(where: { $0.id == weatherData.id }) {
+                                    weatherData = updatedWeatherData
+                                } else {
+                                    print("erro")
+            }
+        }
     }
-}
+
+    }
 
 #Preview {
     
     struct previewView: View {
-        @State var weather: WeatherData? = nil
+        @State var weather: WeatherData = .mock
         
         var body: some View {
             CurrentWeatherView(weatherData: weather)
-                .task {
-                    do {
-                        let forecastAux: Forecast = try await ApiHandling().getJson(endpoint: "https://api.openweathermap.org/data/3.0/onecall?lat=-25.4371499&lon=-49.347251&appid=\(API_KEY)&units=metric", strategy: .convertFromSnakeCase)
-                        
-                        let cityInfo: [CityInfo] = try await ApiHandling().getJson(endpoint: "http://api.openweathermap.org/geo/1.0/reverse?lat=-25.4371499&lon=-49.347251&appid=\(API_KEY)", strategy: .convertFromSnakeCase)
-                        
-                        weather = WeatherData(cityInfo: cityInfo, forecast: forecastAux)
-                    } catch {
-                        print("Error: \(error.localizedDescription)")
-                    }
-                }
         }
     }
     

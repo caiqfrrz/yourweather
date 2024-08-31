@@ -9,10 +9,21 @@ import Foundation
 
 @Observable
 class CityList {
-    private(set) var list: [WeatherData]
+    static var shared = CityList()
     
-    init() {
+    var list: [WeatherData] = []
+    
+    private init() {
         self.list = []
+    }
+    
+    private static func fileURL() throws -> URL {
+        try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
+            .appendingPathComponent("list.data")
+    }
+    
+    func getCity(at index: Int) -> WeatherData {
+        return list[index]
     }
     
     func getIndex(_ city: WeatherData) -> Int? {
@@ -36,10 +47,35 @@ class CityList {
     func updateCity(_ city: WeatherData) async {
         if let index = getIndex(city) {
             if let weatherData = await ApiHandling().getWeatherData(lat: city.forecast.lat, lon: city.forecast.lon) {
-                list[index] = weatherData
+                list[index].forecast = weatherData.forecast
+                list[index].cityInfo = weatherData.cityInfo
             } else {
                 print("Failed to update city data")
             }
         }
     }
+    
+    func load() async throws {
+        let task = Task<[WeatherData], Error> {
+            let fileURL = try Self.fileURL()
+            guard let data = try? Data(contentsOf: fileURL) else {
+                return []
+            }
+            let list = try JSONDecoder().decode([WeatherData].self, from: data)
+            return list
+        }
+        let list = try await task.value
+        self.list = list
+    }
+    
+    func save(list: [WeatherData]) async throws {
+        let task = Task {
+            let data = try JSONEncoder().encode(list)
+            let outfile = try Self.fileURL()
+            try data.write(to: outfile)
+        }
+        
+        _ = try await task.value
+    }
+    
 }

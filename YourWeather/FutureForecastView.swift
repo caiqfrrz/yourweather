@@ -9,12 +9,11 @@
 import SwiftUI
 
 struct FutureForecastView: View {
-    let weatherData: WeatherData?
+    @Binding var data: WeatherData
     
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack {
-                if let data = weatherData {
                     ForEach(0..<16) { index in
                         if data.getDate(from: data.forecast.hourly[index].dt) > data.getDate(from: data.forecast.current.dt) {
                             VStack {
@@ -34,7 +33,7 @@ struct FutureForecastView: View {
                         }
                     }
                     
-                }
+                
             }
             .padding()
         }
@@ -43,10 +42,10 @@ struct FutureForecastView: View {
 
 #Preview {
     struct previewView: View {
-        @State var forecast: WeatherData? = nil
+        @State var forecast: WeatherData = WeatherData.mock
         
         var body: some View {
-            FutureForecastView(weatherData: forecast)
+            FutureForecastView(data: $forecast)
         }
     }
     

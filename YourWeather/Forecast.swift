@@ -8,10 +8,16 @@
 import Foundation
 import SwiftUI
 
+
 struct WeatherData: Codable, Identifiable, Equatable {
     let id = UUID()
-    let cityInfo: [CityInfo]
-    let forecast: Forecast
+    var cityInfo: [CityInfo]
+    var forecast: Forecast
+    
+    init(cityInfo: [CityInfo], forecast: Forecast) {
+        self.cityInfo = cityInfo
+        self.forecast = forecast
+    }
 }
 
 struct CityInfo: Codable, Equatable {

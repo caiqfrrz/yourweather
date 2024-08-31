@@ -9,7 +9,9 @@ import SwiftUI
 import CoreHaptics
 
 struct GridLayoutView: View {
+    @Environment(\.scenePhase) private var scenePhase
     @Binding var cityList: CityList
+    let saveAction: ()->Void
     
     let columns = [GridItem(.adaptive(minimum: 150))]
     
@@ -29,15 +31,18 @@ struct GridLayoutView: View {
             print("updated")
             await cityList.updateList()
         }
+        .onChange(of: scenePhase) { oldPhase, newPhase in
+            if newPhase == .inactive { saveAction() }
+        }
     }
 }
 
 #Preview {
     struct previewView: View {
-        @State var cityList = CityList()
+        @State var cityList = CityList.shared
         
         var body: some View {
-            GridLayoutView( cityList: $cityList)
+            GridLayoutView( cityList: $cityList, saveAction: {})
                 
         }
     }

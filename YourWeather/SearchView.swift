@@ -49,7 +49,7 @@ struct SearchView: View {
 
 #Preview {
     struct previewView: View {
-        @State var cityList = CityList()
+        @State var cityList = CityList.shared
         @State private var searchVw = LocationSearchService()
         
         var body: some View {
