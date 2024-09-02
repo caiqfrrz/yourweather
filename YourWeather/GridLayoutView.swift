@@ -29,7 +29,7 @@ struct GridLayoutView: View {
                     ForEach(cityList.list) { city in
                         GridCitySquareView(weather: city)
                             .onTapGesture {
-                                isCityTapped.toggle()
+                                isCityTapped = true
                                 if let indexCity = cityList.getIndex(city) {
                                     index = indexCity
                                 }
