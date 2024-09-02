@@ -29,22 +29,18 @@ struct GridLayoutView: View {
                     ForEach(cityList.list) { city in
                         GridCitySquareView(weather: city)
                             .onTapGesture {
-                                isCityTapped = true
                                 if let indexCity = cityList.getIndex(city) {
                                     index = indexCity
+                                    isCityTapped = true
                                 }
                             }
                             .onLongPressGesture(perform: {
+                                index = 0
                                 withAnimation {
                                     cityList.removeCity(city)
                                 }
                             })
                             .sensoryFeedback(.start, trigger: isCityTapped)
-//                        NavigationLink {
-//                            CurrentWeatherView(weatherData: city)
-//                        } label: {
-//                            GridCitySquareView(weather: city)
-//                        }
                     }
                 }
             }
