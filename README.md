@@ -18,12 +18,12 @@ YourWeather is a weather app that provides real-time weather updates, future for
 
 ## Screenshots 
 
-<img src="https://github.com/user-attachments/assets/a0e1f4e3-6697-456c-bd98-131adf5d81c9" width="264" height="570" />
 <img src="https://github.com/user-attachments/assets/dec7ed92-0e5f-462e-80d4-23de73018e54" width="264" height="570" />
+<img src="https://github.com/user-attachments/assets/8b0ba805-764e-4b4e-be52-e0253778d9df" width="264" height="570"  />
+<img src="https://github.com/user-attachments/assets/a0e1f4e3-6697-456c-bd98-131adf5d81c9" width="264" height="570" />
 <img src="https://github.com/user-attachments/assets/eaf10ac1-8e9a-4e72-b0f1-d64591d0d68f" width="264" height="570" />
 <img src="https://github.com/user-attachments/assets/e7491a40-3dfa-492b-9ac4-cfcce6a7aa29" width="264" height="570" />
 <img src="https://github.com/user-attachments/assets/07affe6c-84b9-4c2d-b1bd-8862da2579a4" width="264" height="570" />
-<img src="https://github.com/user-attachments/assets/8b0ba805-764e-4b4e-be52-e0253778d9df" width="264" height="570"  />
 
 
 ## Getting Started
@@ -32,7 +32,7 @@ YourWeather is a weather app that provides real-time weather updates, future for
 To connect the app to a weather service, you'll need to configure your API keys:
 
 1. **Get an API key:**
-   - Create an account and get a free API key from [OpenWeatherMap](https://openweathermap.org/) (To get to use the One Call 3.0 API you will need billing information atributed to your OpenWeather account, but you can limit the calls to 1000 calls per day to make sure you will not be charged, as the API gives 1000 free calls.)
+   - Create an account and get a free API key from [OpenWeatherMap](https://openweathermap.org/) (to get to use the One Call 3.0 API you will need billing information attributed to your OpenWeather account, but you can limit the calls to 1000 calls per day to make sure you will not be charged, as the API gives 1000 free calls per day.)
      
 2. **Configure the API key**
    - Add your API key to the code as:
