@@ -18,12 +18,12 @@ YourWeather is a weather app that provides real-time weather updates, future for
 
 ## Screenshots 
 
-<img src="https://github.com/user-attachments/assets/a0e1f4e3-6697-456c-bd98-131adf5d81c9" width="294" height="639" />
-<img src="https://github.com/user-attachments/assets/dec7ed92-0e5f-462e-80d4-23de73018e54" width="294" height="639" />
-<img src="https://github.com/user-attachments/assets/eaf10ac1-8e9a-4e72-b0f1-d64591d0d68f" width="294" height="639" />
-<img src="https://github.com/user-attachments/assets/e7491a40-3dfa-492b-9ac4-cfcce6a7aa29" width="294" height="639" />
-<img src="https://github.com/user-attachments/assets/07affe6c-84b9-4c2d-b1bd-8862da2579a4" width="294" height="639" />
-<img src="https://github.com/user-attachments/assets/8b0ba805-764e-4b4e-be52-e0253778d9df" width="294" height="639" />
+<img src="https://github.com/user-attachments/assets/a0e1f4e3-6697-456c-bd98-131adf5d81c9" width="264" height="570" />
+<img src="https://github.com/user-attachments/assets/dec7ed92-0e5f-462e-80d4-23de73018e54" width="264" height="570" />
+<img src="https://github.com/user-attachments/assets/eaf10ac1-8e9a-4e72-b0f1-d64591d0d68f" width="264" height="570" />
+<img src="https://github.com/user-attachments/assets/e7491a40-3dfa-492b-9ac4-cfcce6a7aa29" width="264" height="570" />
+<img src="https://github.com/user-attachments/assets/07affe6c-84b9-4c2d-b1bd-8862da2579a4" width="264" height="570" />
+<img src="https://github.com/user-attachments/assets/8b0ba805-764e-4b4e-be52-e0253778d9df" width="264" height="570"  />
 
 
 ## Getting Started
