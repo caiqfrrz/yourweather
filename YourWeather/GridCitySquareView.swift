@@ -24,17 +24,10 @@ struct GridCitySquareView: View {
                 .font(.caption)
                 .foregroundStyle(.gray)
             
-//            Text(weather.getDate(from: weather.forecast.current.dt).formatted(date: .omitted
-//                                                                                     , time: .shortened))
-//                .font(.caption)
-//                .foregroundStyle(.gray)
         }
         .frame(width: 150, height: 120)
+        .background(.ultraThinMaterial)
         .clipShape(.rect(cornerRadius: 15))
-        .overlay(
-            RoundedRectangle(cornerRadius: 15)
-                .stroke(.ultraThinMaterial)
-        )
         .shadow(radius: 5)
         .padding(.vertical, 5)
 
