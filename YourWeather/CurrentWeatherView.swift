@@ -97,15 +97,6 @@ struct CurrentWeatherView: View {
     }
 
 #Preview {
-    
-    struct previewView: View {
-        @State var weather: WeatherData = .mock
-        
-        var body: some View {
-            CurrentWeatherView(weatherData: weather)
-        }
-    }
-    
-    return previewView()
-    
+    var weather = WeatherData.mock
+    return CurrentWeatherView(weatherData: weather)
 }

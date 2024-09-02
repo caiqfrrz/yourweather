@@ -73,12 +73,12 @@ struct Forecast: Codable, Equatable {
             URL(string: "https://openweathermap.org/img/wn/\(icon)@2x.png")!
         }
         var background: LinearGradient {
-            if icon == "01n" || icon == "02n" || icon == "03n" || icon == "04n" || icon == "09n" || icon == "10n" || icon == "11n" || icon == "13n" || icon == "50n" {
-                return LinearGradient(stops: [.init(color: Color(red: 0, green: 0, blue: 0.4), location: 0.1),
-                                              .init(color: Color(red: 0.3, green: 0.3, blue: 0.3), location: 1)], startPoint: .top, endPoint: .bottom)
+            if icon == "01d" || icon == "02d" {
+                return LinearGradient.sunny()
+            } else if icon == "01n" || icon == "02n" {
+                return LinearGradient.clearNight()
             } else {
-                return LinearGradient(stops: [.init(color: Color(red: 0.7, green: 0.6, blue: 0), location: 0),
-                                              .init(color: Color(red: 0.1, green: 0.5, blue: 0.9), location: 0.5)], startPoint: .top, endPoint: .bottom)
+                return LinearGradient.cloudy()
             }
         }
     }

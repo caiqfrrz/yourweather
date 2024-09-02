@@ -14,19 +14,19 @@ struct FutureForecastView: View {
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack {
-                    ForEach(0..<16) { index in
-                        if data.getDate(from: data.forecast.hourly[index].dt) > data.getDate(from: data.forecast.current.dt) {
+                ForEach(data.forecast.hourly, id: \.dt) { hour in
+                        if data.getDate(from: hour.dt) > data.getDate(from: data.forecast.current.dt) {
                             VStack {
-                                Text("\(Int(data.forecast.hourly[index].temp))°")
+                                Text("\(Int(hour.temp))°")
                                     .foregroundStyle(.white)
                                     .font(.title2.bold())
                                 
-                                Image(data.forecast.hourly[index].weather.first?.icon ?? "")
+                                Image(hour.weather.first?.icon ?? "")
                                     .resizable()
                                     .scaledToFit()
                                     .frame(width: 50, height: 50)
                                 
-                                Text(data.getDate(from: data.forecast.hourly[index].dt).formatted(date: .omitted, time: .shortened))
+                                Text(data.getDate(from: hour.dt).formatted(date: .omitted, time: .shortened))
                                     .foregroundStyle(.white)
                             }
                             .padding(.horizontal)
