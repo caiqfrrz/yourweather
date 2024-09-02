@@ -1,6 +1,6 @@
 # 🌤️ YourWeather
 
-YourWeather is a weather app that provides real-time weather updates, future forecasts, and detailed weather information for your favorite cities. With a sleek and modern interface, YourWeather is built using SwiftUI, integrating seamlessly with [OpenWeatherMap](https://openweathermap.org/) API's to fetch accurate weather data.
+YourWeather is a weather app that provides real-time weather updates, future forecasts, and detailed weather information for your favorite cities. Search to add the city you would like to know about the weather to your list, and hold it to remove it! With a sleek and modern interface, YourWeather is built using SwiftUI, integrating seamlessly with [OpenWeatherMap](https://openweathermap.org/) API's to fetch accurate weather data.
 
 ## Features
 
