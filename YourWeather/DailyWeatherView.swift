@@ -14,6 +14,14 @@ struct DailyWeatherView: View {
         
         VStack(alignment: .leading) {
             
+            HStack {
+                Text("DAILY FORECAST")
+                
+                Image(systemName: "calendar")
+            }
+            .font(.caption)
+            .foregroundStyle(.secondary)
+            
             ForEach(weather.forecast.daily, id: \.dt) { day in
                 if weather.getDate(from: day.dt) > weather.getDate(from: weather.forecast.current.dt) {
                     HStack {

@@ -28,7 +28,6 @@ struct GridLayoutView: View {
             }
         }
         .task {
-            print("updated")
             await cityList.updateList()
         }
         .onChange(of: scenePhase) { oldPhase, newPhase in

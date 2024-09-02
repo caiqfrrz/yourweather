@@ -12,31 +12,49 @@ struct FutureForecastView: View {
     @Binding var data: WeatherData
     
     var body: some View {
-        ScrollView(.horizontal, showsIndicators: false) {
-            HStack {
-                ForEach(data.forecast.hourly, id: \.dt) { hour in
+        VStack(alignment: .leading) {
+
+                HStack {
+                    Text("HOURLY FORECAST")
+                    
+                    Image(systemName: "clock")
+                }
+                .font(.caption)
+                .foregroundStyle(.secondary)
+                .padding(.top)
+            
+            Rectangle()
+                .frame(height: 1)
+                .opacity(0.1)
+            
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack {
+                    ForEach(data.forecast.hourly, id: \.dt) { hour in
                         if data.getDate(from: hour.dt) > data.getDate(from: data.forecast.current.dt) {
                             VStack {
                                 Text("\(Int(hour.temp))°")
                                     .foregroundStyle(.white)
-                                    .font(.title2.bold())
+                                    .font(.title3.bold())
                                 
                                 Image(hour.weather.first?.icon ?? "")
                                     .resizable()
                                     .scaledToFit()
-                                    .frame(width: 50, height: 50)
+                                    .frame(width: 40, height: 40)
                                 
                                 Text(data.getDate(from: hour.dt).formatted(date: .omitted, time: .shortened))
                                     .foregroundStyle(.white)
+                                    .font(.caption)
                             }
-                            .padding(.horizontal)
+                            .padding(.trailing)
                         }
                     }
-                    
-                
+                }
+                .padding(.bottom)
             }
-            .padding()
         }
+        .padding(.horizontal)
+        .background(.ultraThinMaterial)
+        .clipShape(.rect(cornerRadius: 20))
     }
 }
 

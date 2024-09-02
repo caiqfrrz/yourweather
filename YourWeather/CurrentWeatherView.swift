@@ -67,11 +67,8 @@ struct CurrentWeatherView: View {
                                     .foregroundStyle(.white)
                                 
                                 FutureForecastView(data: $weatherData)
-                                    .padding(.horizontal)
-                                    .background(.ultraThinMaterial)
-                                    .clipShape(.rect(cornerRadius: 20))
-                                    .padding(.vertical)
-                                
+                                    .padding(.top)
+
                                 DailyWeatherView(weather: $weatherData)
                             }
                         }

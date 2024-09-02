@@ -11,7 +11,7 @@ import Foundation
 class CityList {
     static var shared = CityList()
     
-    var list: [WeatherData] = []
+    var list: [WeatherData]
     
     private init() {
         self.list = []

@@ -12,6 +12,7 @@ struct ContentView: View {
     @Environment(\.scenePhase) private var scenePhase
     @State private var searchVw = LocationSearchService()
     @State private var cityList = CityList.shared
+    @State private var hasLoaded = false
     
     var body: some View {
         NavigationStack {
@@ -32,13 +33,18 @@ struct ContentView: View {
             }
             .searchable(text: $searchVw.query)
             .navigationTitle("YourWeather")
-            .task {
-                do {
-                    try await cityList.load()
-                } catch {
-                    print("Error loading list: \(error.localizedDescription)")
-                }
-            }
+            .onAppear {
+                            if !hasLoaded {
+                                Task {
+                                    do {
+                                        try await cityList.load()
+                                        hasLoaded = true  // Mark as loaded
+                                    } catch {
+                                        print("Error loading list: \(error.localizedDescription)")
+                                    }
+                                }
+                            }
+                        }
             .onChange(of: scenePhase) { oldPhase, newPhase in
                 if newPhase == .active {
                     Task {
