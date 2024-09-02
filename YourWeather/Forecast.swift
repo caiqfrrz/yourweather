@@ -8,8 +8,10 @@
 import Foundation
 import SwiftUI
 
+// Struct that receives the API's calls: CityInfo and Forecast
 
 struct WeatherData: Codable, Identifiable, Equatable {
+
     let id = UUID()
     var cityInfo: [CityInfo]
     var forecast: Forecast

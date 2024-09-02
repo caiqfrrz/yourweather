@@ -5,6 +5,8 @@
 //  Created by Caique Ferraz on 28/08/24.
 //
 
+// Not used in this aplication (Get the user location)
+
 import Foundation
 import CoreLocation
 import MapKit

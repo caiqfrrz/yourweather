@@ -9,6 +9,7 @@ import Foundation
 import SwiftUI
 import MapKit
 
+// Search service and autocompletion
 
 @Observable
 class LocationSearchService: NSObject {

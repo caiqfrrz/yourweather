@@ -8,10 +8,12 @@
 import SwiftUI
 
 struct ContentView: View {
-
+    
+    
     @Environment(\.scenePhase) private var scenePhase
     @State private var searchVw = LocationSearchService()
     @State private var cityList = CityList.shared
+    // Boolean to make sure the app only loads the saved list one time, and not when it comes back to this view
     @State private var hasLoaded = false
     
     var body: some View {
@@ -34,17 +36,17 @@ struct ContentView: View {
             .searchable(text: $searchVw.query)
             .navigationTitle("YourWeather")
             .onAppear {
-                            if !hasLoaded {
-                                Task {
-                                    do {
-                                        try await cityList.load()
-                                        hasLoaded = true  // Mark as loaded
-                                    } catch {
-                                        print("Error loading list: \(error.localizedDescription)")
-                                    }
-                                }
-                            }
+                if !hasLoaded {
+                    Task {
+                        do {
+                            try await cityList.load()
+                            hasLoaded = true  // Mark as loaded
+                        } catch {
+                            print("Error loading list: \(error.localizedDescription)")
                         }
+                    }
+                }
+            }
             .onChange(of: scenePhase) { oldPhase, newPhase in
                 if newPhase == .active {
                     Task {

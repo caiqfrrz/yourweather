@@ -8,6 +8,8 @@
 import Foundation
 import CoreLocation
 
+// Handles the API's calls
+
 final class ApiHandling {
     
     enum getAPIError: Error {
@@ -16,6 +18,7 @@ final class ApiHandling {
         case invalidData
     }
     
+    // Decode the API call into a struct
     func getJson<T: Codable>(endpoint: String, strategy: JSONDecoder.KeyDecodingStrategy) async throws -> T {
         
         guard let url = URL(string: endpoint) else {
@@ -36,23 +39,7 @@ final class ApiHandling {
             throw getAPIError.invalidData
         }
     }
-    
-    func getForecast<T: Codable>(for locale: String) async -> T? {
-        do {
-            let coded = try await CLGeocoder().geocodeAddressString(locale)
-            
-            let lat = coded[0].location?.coordinate.latitude ?? 0.0
-            let lon = coded[0].location?.coordinate.longitude ?? 0.0
-            
-            let forecastAux: T = try await getJson(endpoint: "https://api.openweathermap.org/data/3.0/onecall?lat=\(Double(lat))&lon=\(Double(lon))&appid=\(API_KEY)&units=metric", strategy: .convertFromSnakeCase)
-            
-            return forecastAux
-            
-        } catch {
-            print("Error getting location: \(error.localizedDescription)")
-        }
-        return nil
-    }
+
     
     func getWeatherData(for locale: String) async -> WeatherData? {
         do {
@@ -87,17 +74,6 @@ final class ApiHandling {
         return nil
     }
     
-    func getForecast<T: Codable>(lat: Double, lon: Double, type: String) async -> T? {
-        do {
-            let forecastAux: T = try await getJson(endpoint: "https://api.openweathermap.org/data/3.0/onecall?lat=\(Double(lat))&lon=\(Double(lon))&appid=\(API_KEY)&units=metric", strategy: .convertFromSnakeCase)
-            
-            return forecastAux
-            
-        } catch {
-            print("Error getting location: \(error.localizedDescription)")
-        }
-        return nil
-    }
 }
 
 extension ApiHandling {

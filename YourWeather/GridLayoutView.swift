@@ -13,25 +13,48 @@ struct GridLayoutView: View {
     @Binding var cityList: CityList
     let saveAction: ()->Void
     
+    // Saves the index to use in navigation
+    @State var index: Int = 0
+    
+    @State private var isCityTapped = false
+    
     let columns = [GridItem(.adaptive(minimum: 150))]
     
     var body: some View {
-        ScrollView {
-            LazyVGrid(columns: columns) {
-                ForEach(cityList.list) { city in
-                    NavigationLink {
-                        CurrentWeatherView(weatherData: city)
-                    } label: {
+        if cityList.list.isEmpty {
+            emptyListView()
+        } else {
+            ScrollView {
+                LazyVGrid(columns: columns) {
+                    ForEach(cityList.list) { city in
                         GridCitySquareView(weather: city)
+                            .onTapGesture {
+                                isCityTapped.toggle()
+                                if let indexCity = cityList.getIndex(city) {
+                                    index = indexCity
+                                }
+                            }
+                            .onLongPressGesture(perform: {
+                                withAnimation {
+                                    cityList.removeCity(city)
+                                }
+                            })
+                            .sensoryFeedback(.start, trigger: isCityTapped)
+//                        NavigationLink {
+//                            CurrentWeatherView(weatherData: city)
+//                        } label: {
+//                            GridCitySquareView(weather: city)
+//                        }
                     }
                 }
             }
-        }
-        .task {
-            await cityList.updateList()
-        }
-        .onChange(of: scenePhase) { oldPhase, newPhase in
-            if newPhase == .inactive { saveAction() }
+            .navigationDestination(isPresented: $isCityTapped, destination: { CurrentWeatherView(weatherData: cityList.list[index])})
+            .task {
+                await cityList.updateList()
+            }
+            .onChange(of: scenePhase) { oldPhase, newPhase in
+                if newPhase == .inactive { saveAction() }
+            }
         }
     }
 }
@@ -42,7 +65,7 @@ struct GridLayoutView: View {
         
         var body: some View {
             GridLayoutView( cityList: $cityList, saveAction: {})
-                
+            
         }
     }
     

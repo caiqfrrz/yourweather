@@ -7,6 +7,8 @@
 
 import Foundation
 
+// Class that contains the list of cities the user saved
+
 @Observable
 class CityList {
     static var shared = CityList()
